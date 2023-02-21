@@ -20,7 +20,7 @@ function Tenders() {
         <div>
             <TableContainer>
 
-                <h2 class="text-center font-medium text-xl leading-tight align-middle mt-0 mb-2">Bidders</h2>
+                <h2 className="text-center font-medium text-xl leading-tight align-middle mt-0 mb-2">Bidders</h2>
 
                 <Table variant='simple'>
                     <Thead>

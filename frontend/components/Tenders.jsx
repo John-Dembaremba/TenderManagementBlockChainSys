@@ -21,7 +21,7 @@ function Tenders() {
     return (
         <div>
             <TableContainer>
-                <h2 class="text-center font-medium text-xl leading-tight align-middle mt-0 mb-2">Tenders</h2>
+                <h2 className="text-center font-medium text-xl leading-tight align-middle mt-0 mb-2">Tenders</h2>
                 <Button rightIcon={<ArrowForwardIcon />} colorScheme='teal' variant='outline'>
                     <Link href='forms/createTender'>Create New Tender</Link>
                 </Button>
