@@ -1,505 +1,650 @@
-{
-    "abi": [
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "name": "bidTender",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "applicaionId",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "tenderStage",
-                    "type": "string"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "name": "bidTendersArray",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "applicaionId",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "tenderStage",
-                    "type": "string"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "name": "companiesDocsArray",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "docId",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "name",
-                    "type": "string"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "name": "companiesProfilesArray",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "companyName",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "companyAddress",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "contactInfo",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "email",
-                    "type": "string"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "name": "companyDocs",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "docId",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "name",
-                    "type": "string"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "name": "companyProfile",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "companyName",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "companyAddress",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "contactInfo",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "email",
-                    "type": "string"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "_applicaionId",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_tenderStage",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string[]",
-                    "name": "_biddingDocs",
-                    "type": "string[]"
-                }
-            ],
-            "name": "createBidTender",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "_docId",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_name",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string[]",
-                    "name": "_docAddress",
-                    "type": "string[]"
-                }
-            ],
-            "name": "createCompanyDocs",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "_companyName",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_companyAddress",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_contactInfo",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_email",
-                    "type": "string"
-                }
-            ],
-            "name": "createCompanyProfile",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "_requestForQuotaion",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_openDate",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_closingDate",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_requirements",
-                    "type": "string"
-                }
-            ],
-            "name": "createTenderAdvert",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "_application",
-                    "type": "string"
-                },
-                {
-                    "internalType": "bool",
-                    "name": "_acceptApplication",
-                    "type": "bool"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_reasons",
-                    "type": "string"
-                }
-            ],
-            "name": "createTenderProcess",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "_requestForQuotaion",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_stageId",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_stageName",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_requirements",
-                    "type": "string"
-                }
-            ],
-            "name": "createTenderStages",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "name": "tenderAdvert",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "requestForQuotaion",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "openDate",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "closingDate",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "requirements",
-                    "type": "string"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "name": "tenderProcessesArray",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "application",
-                    "type": "string"
-                },
-                {
-                    "internalType": "bool",
-                    "name": "acceptApplication",
-                    "type": "bool"
-                },
-                {
-                    "internalType": "string",
-                    "name": "reasons",
-                    "type": "string"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                }
-            ],
-            "name": "tenderProcessing",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "application",
-                    "type": "string"
-                },
-                {
-                    "internalType": "bool",
-                    "name": "acceptApplication",
-                    "type": "bool"
-                },
-                {
-                    "internalType": "string",
-                    "name": "reasons",
-                    "type": "string"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "",
-                    "type": "string"
-                }
-            ],
-            "name": "tenderStages",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "stageId",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "stageName",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "requirements",
-                    "type": "string"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "name": "tenderStagesArray",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "stageId",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "stageName",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "requirements",
-                    "type": "string"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "name": "tendersArray",
-            "outputs": [
-                {
-                    "internalType": "string",
-                    "name": "requestForQuotaion",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "openDate",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "closingDate",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "requirements",
-                    "type": "string"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        }
-    ]
-}
+[
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "_applicationId",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_tenderStage",
+                "type": "string"
+            },
+            {
+                "internalType": "string[]",
+                "name": "_biddingDocs",
+                "type": "string[]"
+            }
+        ],
+        "name": "createBidTender",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "_docId",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_name",
+                "type": "string"
+            },
+            {
+                "internalType": "string[]",
+                "name": "_docAddress",
+                "type": "string[]"
+            }
+        ],
+        "name": "createCompanyDocs",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "_companyName",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_companyAddress",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_contactInfo",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_email",
+                "type": "string"
+            }
+        ],
+        "name": "createCompanyProfile",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "_requestForQuotation",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_openDate",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_closingDate",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_requirements",
+                "type": "string"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "stageId",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "stageName",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "requirements",
+                        "type": "string"
+                    }
+                ],
+                "internalType": "struct TenderManagementSystem.TenderStages",
+                "name": "_stages",
+                "type": "tuple"
+            }
+        ],
+        "name": "createTenderAdvert",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "_application",
+                "type": "string"
+            },
+            {
+                "internalType": "bool",
+                "name": "_acceptApplication",
+                "type": "bool"
+            },
+            {
+                "internalType": "string",
+                "name": "_reasons",
+                "type": "string"
+            }
+        ],
+        "name": "createTenderProcess",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "bidTender",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "applicationId",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "tenderStage",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "bidTendersArray",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "applicationId",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "tenderStage",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "companiesDocsArray",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "docId",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "name",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "companiesProfilesArray",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "companyName",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "companyAddress",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "contactInfo",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "email",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "companyDocs",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "docId",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "name",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "companyProfile",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "companyName",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "companyAddress",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "contactInfo",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "email",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getBidTender",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "applicationId",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "tenderStage",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string[]",
+                        "name": "biddingDocs",
+                        "type": "string[]"
+                    }
+                ],
+                "internalType": "struct TenderManagementSystem.BidTender[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getCompanyDocs",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "docId",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string[]",
+                        "name": "docAddress",
+                        "type": "string[]"
+                    }
+                ],
+                "internalType": "struct TenderManagementSystem.CompanyDocs[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getCompanyProfile",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "companyName",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "companyAddress",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "contactInfo",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "email",
+                        "type": "string"
+                    }
+                ],
+                "internalType": "struct TenderManagementSystem.CompanyProfile[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getTenderAdvert",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "requestForQuotation",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "openDate",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "closingDate",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "requirements",
+                        "type": "string"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "string",
+                                "name": "stageId",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "stageName",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "requirements",
+                                "type": "string"
+                            }
+                        ],
+                        "internalType": "struct TenderManagementSystem.TenderStages[]",
+                        "name": "stages",
+                        "type": "tuple[]"
+                    }
+                ],
+                "internalType": "struct TenderManagementSystem.TenderAdvert[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getTenderProcess",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "application",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "acceptApplication",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "reasons",
+                        "type": "string"
+                    }
+                ],
+                "internalType": "struct TenderManagementSystem.TenderProcess[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "tenderAdvert",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "requestForQuotation",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "openDate",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "closingDate",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "requirements",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "tenderProcessesArray",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "application",
+                "type": "string"
+            },
+            {
+                "internalType": "bool",
+                "name": "acceptApplication",
+                "type": "bool"
+            },
+            {
+                "internalType": "string",
+                "name": "reasons",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "tenderProcessing",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "application",
+                "type": "string"
+            },
+            {
+                "internalType": "bool",
+                "name": "acceptApplication",
+                "type": "bool"
+            },
+            {
+                "internalType": "string",
+                "name": "reasons",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "tendersArray",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "requestForQuotation",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "openDate",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "closingDate",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "requirements",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "tenderStagesArray",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "stageId",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "stageName",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "requirements",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

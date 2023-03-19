@@ -16,14 +16,16 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { LockIcon, UnlockIcon, ArrowForwardIcon } from '@chakra-ui/icons'
+import useGetContractData from './CustomHooks/useGetContractData'
 
 function Tenders() {
+    // console.log(useGetContractData({ isAdverts: true }))
     return (
         <div>
             <TableContainer>
                 <h2 className="text-center font-medium text-xl leading-tight align-middle mt-0 mb-2">Tenders</h2>
                 <Button rightIcon={<ArrowForwardIcon />} colorScheme='teal' variant='outline'>
-                    <Link href='forms/createTender'>Create New Tender</Link>
+                    <Link href='forms/tender/create-tender'>Create New Tender</Link>
                 </Button>
                 <br />
                 <Table variant='simple'>

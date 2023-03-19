@@ -2,15 +2,14 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-
 contract TenderManagementSystem {
-
-// Tender Advert
+    // Tender Advert
     struct TenderAdvert {
-        string requestForQuotaion;
+        string requestForQuotation;
         string openDate;
         string closingDate;
         string requirements;
+        TenderStages[] stages;
     }
     mapping(address => TenderAdvert) public tenderAdvert; // link blockchain account with tender adverts
     TenderAdvert[] public tendersArray;
@@ -20,11 +19,10 @@ contract TenderManagementSystem {
         string stageName;
         string requirements;
     }
-    mapping(string => TenderStages) public tenderStages; // link tender RFQ with tender stages
+    // link tender RFQ with tender stages
     TenderStages[] public tenderStagesArray;
 
-
-// Profile
+    // Profile
     struct CompanyProfile {
         string companyName;
         string companyAddress;
@@ -33,7 +31,7 @@ contract TenderManagementSystem {
     }
     mapping(address => CompanyProfile) public companyProfile;
     CompanyProfile[] public companiesProfilesArray;
-    
+
     struct CompanyDocs {
         string docId;
         string name;
@@ -41,10 +39,10 @@ contract TenderManagementSystem {
     }
     mapping(address => CompanyDocs) public companyDocs; // link bidder or clients address with CompanyDocs
     CompanyDocs[] public companiesDocsArray;
-// Bidders
+    // Bidders
 
     struct BidTender {
-        string applicaionId;
+        string applicationId;
         string tenderStage;
         string[] biddingDocs; // CID from IPFS
     }
@@ -59,80 +57,89 @@ contract TenderManagementSystem {
     mapping(address => TenderProcess) public tenderProcessing; // link client address with TenderProcessing
     TenderProcess[] public tenderProcessesArray;
 
-    function createTenderAdvert(string memory _requestForQuotaion,
+    function createTenderAdvert(
+        string memory _requestForQuotation,
         string memory _openDate,
         string memory _closingDate,
-        string memory _requirements
-        
-        ) public {
-            TenderAdvert storage postTender = tenderAdvert[msg.sender];
-            postTender.requestForQuotaion = _requestForQuotaion;
-            postTender.openDate = _openDate;
-            postTender.closingDate = _closingDate;
-            postTender.requirements = _requirements;
-            tendersArray.push(postTender);
-        }
+        string memory _requirements,
+        TenderStages calldata _stages
+    ) public {
+        TenderAdvert storage postTender = tenderAdvert[msg.sender];
+        postTender.requestForQuotation = _requestForQuotation;
+        postTender.openDate = _openDate;
+        postTender.closingDate = _closingDate;
+        postTender.requirements = _requirements;
+        tendersArray.push(postTender);
+        tenderStagesArray.push(_stages);
+    }
 
-    function createTenderStages(string memory _requestForQuotaion,
-        string memory _stageId,
-        string memory _stageName,
-        string memory _requirements
-        
-        
-        ) public {
-            TenderStages storage postTenderStages = tenderStages[_requestForQuotaion];
-            postTenderStages.stageId = _stageId;
-            postTenderStages.stageName = _stageName;
-            postTenderStages.requirements = _requirements;
-            
-        }
+    function getTenderAdvert() public view returns (TenderAdvert[] memory) {
+        return tendersArray;
+    }
 
-    function createCompanyProfile(string memory _companyName,
+    function createCompanyProfile(
+        string memory _companyName,
         string memory _companyAddress,
         string memory _contactInfo,
-        string memory _email) public {
-            CompanyProfile storage _companyProfile = companyProfile[msg.sender];
-            _companyProfile.companyName = _companyName;
-            _companyProfile.companyAddress = _companyAddress;
-            _companyProfile.contactInfo = _contactInfo;
-            _companyProfile.email = _email;
-            companiesProfilesArray.push(_companyProfile);
-        }
+        string memory _email
+    ) public {
+        CompanyProfile storage _companyProfile = companyProfile[msg.sender];
+        _companyProfile.companyName = _companyName;
+        _companyProfile.companyAddress = _companyAddress;
+        _companyProfile.contactInfo = _contactInfo;
+        _companyProfile.email = _email;
+        companiesProfilesArray.push(_companyProfile);
+    }
 
-    
-    
-    
-    function createCompanyDocs(string memory _docId,
+    function getCompanyProfile() public view returns (CompanyProfile[] memory) {
+        return companiesProfilesArray;
+    }
+
+    function createCompanyDocs(
+        string memory _docId,
         string memory _name,
-        string[] memory _docAddress) public {
-            CompanyDocs storage _companyDocs = companyDocs[msg.sender];
-            _companyDocs.docId = _docId;
-            _companyDocs.name = _name;
-            _companyDocs.docAddress = _docAddress;
-            companiesDocsArray.push(_companyDocs);
-        }
+        string[] memory _docAddress
+    ) public {
+        CompanyDocs storage _companyDocs = companyDocs[msg.sender];
+        _companyDocs.docId = _docId;
+        _companyDocs.name = _name;
+        _companyDocs.docAddress = _docAddress;
+        companiesDocsArray.push(_companyDocs);
+    }
 
-    
-    function createBidTender(string memory _applicaionId,
+    function getCompanyDocs() public view returns (CompanyDocs[] memory) {
+        return companiesDocsArray;
+    }
+
+    function createBidTender(
+        string memory _applicationId,
         string memory _tenderStage,
-        string[] memory _biddingDocs) public {
-            BidTender storage _bidTender = bidTender[msg.sender];
-            _bidTender.applicaionId = _applicaionId;
-            _bidTender.tenderStage = _tenderStage;
-            _bidTender.biddingDocs = _biddingDocs;
-            bidTendersArray.push(_bidTender);
-        }
+        string[] memory _biddingDocs
+    ) public {
+        BidTender storage _bidTender = bidTender[msg.sender];
+        _bidTender.applicationId = _applicationId;
+        _bidTender.tenderStage = _tenderStage;
+        _bidTender.biddingDocs = _biddingDocs;
+        bidTendersArray.push(_bidTender);
+    }
 
-    function createTenderProcess(string memory _application,
+    function getBidTender() public view returns (BidTender[] memory) {
+        return bidTendersArray;
+    }
+
+    function createTenderProcess(
+        string memory _application,
         bool _acceptApplication,
-        string memory _reasons) public {
-            TenderProcess storage _tenderProcessing = tenderProcessing[msg.sender];
-            _tenderProcessing.application = _application;
-            _tenderProcessing.acceptApplication = _acceptApplication;
-            _tenderProcessing.reasons = _reasons;
-            tenderProcessesArray.push(_tenderProcessing);
-        }
+        string memory _reasons
+    ) public {
+        TenderProcess storage _tenderProcessing = tenderProcessing[msg.sender];
+        _tenderProcessing.application = _application;
+        _tenderProcessing.acceptApplication = _acceptApplication;
+        _tenderProcessing.reasons = _reasons;
+        tenderProcessesArray.push(_tenderProcessing);
+    }
 
-  
-    
+    function getTenderProcess() public view returns (TenderProcess[] memory) {
+        return tenderProcessesArray;
+    }
 }

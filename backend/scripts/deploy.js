@@ -6,6 +6,7 @@
 // global scope, and execute the script.
 
 const hre = require("hardhat");
+const fs = require("fs")
 
 async function main() {
   const tenderManagementContract = await hre.ethers.getContractFactory("TenderManagementSystem");
@@ -14,6 +15,11 @@ async function main() {
   await deployedContract.deployed();
 
   console.log("Conract Address: ", deployedContract.address)
+  fs.writeFile("../artifacts/contracts/TenderManagementSystem.sol/ContractAddress.json", JSON.stringify({ "Address": deployedContract.address }), function (error) {
+    console.error(
+      "Error on writing", error
+    );
+  })
 }
 
 main().then(() => process.exit(0)).catch((error) => {
