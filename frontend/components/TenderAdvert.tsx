@@ -23,19 +23,14 @@ import {
 import { Container } from '@chakra-ui/react'
 
 import { ArrowForwardIcon, AddIcon, DeleteIcon } from '@chakra-ui/icons'
-import rfqGenerator from '../utils/rfqGenerator';
 import { useState, useEffect } from 'react';
 import TenderStages from '../components/forms/TenderStages'
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction, useAccount } from 'wagmi'
-import abi from '../utils/contractAbi.json' assert {type: "json"};
+import abi from '../../backend/artifacts/contracts/TenderManagementSystem.sol/TenderManagementSystem.json' assert {type: "json"}
 import useGetContractData from '../components/CustomHooks/useGetContractData';
 
 
-function TenderAdvert() {
-
-    const rfqNum = rfqGenerator();
-    // if page re-render dont update 'rfqNum', use that previo
-    const [rfqNumber, setRfqNumber] = useState(rfqNum)
+function TenderAdvert({ rfqNumber }: any) {
 
     type LoadedFormData = {
         requestForQuotation?: string,
@@ -50,41 +45,20 @@ function TenderAdvert() {
     const [isTenderAdvertDataReady, setTenderAdvertDataReady] = useState(false)
     const [isTenderStagesDataReady, setTenderStagesDataReady] = useState(false)
     const [isTenderFormSubmitted, setTenderFormSubmitted] = useState(false)
-    const [isTenderPosted, setIsTenderPosted] = useState(true)
+
+    const { config } = usePrepareContractWrite({
+        address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+        abi: abi.abi,
+        functionName: 'createTenderAdvert',
+        args: [tenderAdvertFormData.requestForQuotation!, tenderAdvertFormData.openDate!, tenderAdvertFormData.closingDate!, tenderAdvertFormData.tenderRequirements!]
+    })
 
 
 
-
-    // hook that listens for wait for transaction
-    // if (isTenderFormSubmitted) {
-    //     console.log("==============Hit============")
-    //     const { write, data, isLoading, isSuccess, status, isIdle } = useWriteTender({ requestForQuotation: tenderAdvertFormData.requestForQuotation!, openDate: tenderAdvertFormData.openDate!, closingDate: tenderAdvertFormData.closingDate!, tenderRequirements: tenderAdvertFormData.tenderRequirements!, tenderStagesArray: tenderStagesFormData })
-    //     write?.();
-    //     console.log("LOading: ", isLoading)
-    //     console.log("Status:", status)
-    // }
-
-    // call contract method for creating tender
-    // const { config } = usePrepareContractWrite({
-    //     address: "0x18b5Af6F8fc4800C74ef7682f28B97d6e0Dc126b",
-    //     abi: abi,
-    //     functionName: 'createTenderAdvert',
-    //     args: [tenderAdvertFormData.requestForQuotation!, tenderAdvertFormData.openDate!, tenderAdvertFormData.closingDate!, tenderAdvertFormData.tenderRequirements!, tenderStagesFormData]
-    // })
-
-
-    // const { write, data, isLoading } = useContractWrite({
-    //     mode: "recklesslyUnprepared",
-    //     address: "0x18b5Af6F8fc4800C74ef7682f28B97d6e0Dc126b",
-    //     abi: abi,
-    //     functionName: 'createTenderAdvert',
-    //     args: [tenderAdvertFormData.requestForQuotation!, tenderAdvertFormData.openDate!, tenderAdvertFormData.closingDate!, tenderAdvertFormData.tenderRequirements!, tenderStagesFormData]
-    // })
-
-
-    // const { isSuccess, status, isIdle } = useWaitForTransaction({
-    //     hash: data?.hash,
-    // })
+    const { data, isLoading, write } = useContractWrite(config)
+    const { isSuccess, status, isIdle } = useWaitForTransaction({
+        hash: data?.hash,
+    })
 
     const { address, isConnecting, isDisconnected } = useAccount()
 
@@ -93,17 +67,14 @@ function TenderAdvert() {
 
         if (isTenderFormSubmitted) {
             // console.log("AD--->>", tenderAdvertFormData)
-            // write?.(); // the method for posting transactions to blockchain
+            write?.(); // the method for posting transactions to blockchain
 
-            {
-                isTenderPosted &&
-                    localStorage.setItem('Posted', JSON.stringify(isTenderPosted))
-            }
             setTenderFormSubmitted(!isTenderFormSubmitted)
             setTenderAdvertDataReady(!isTenderAdvertDataReady)
             setTenderStagesDataReady(!isTenderStagesDataReady)
+
+
         }
-        console.log("Form submitted: ", isTenderFormSubmitted)
     }, [isTenderFormSubmitted])
 
     const handleTenderAdvertsFormChange = (event?: any) => {
@@ -124,15 +95,13 @@ function TenderAdvert() {
         // Stop the form from submitting and refreshing the page.
         event.preventDefault()
         setTenderFormSubmitted(true)
-
-        console.log(tenderAdvertFormData)
     }
 
 
     return (
         <div>
 
-            <form>
+            <form >
                 <FormControl>
 
                     <Box p={8} maxHeight='500px' overflow='hidden' borderWidth={2} borderRadius={8} boxShadow='lg'>
@@ -205,29 +174,43 @@ function TenderAdvert() {
                     </Box>
 
                     <Flex h="10vh" justifyContent="center" alignItems="center">
-                        <Button
+                        {
+                            isLoading ? <Button
+                                isLoading
+                                loadingText='Mining Transaction'
+                                variant='outline'
+                            /> :
+                                !isSuccess ?
+                                    <Button
 
-                            size='lg'
-                            width='500px'
-                            px={4}
-                            fontSize={'sm'}
-                            rounded={'full'}
-                            bg={'blue.400'}
-                            color={'white'}
-                            boxShadow={
-                                '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'
-                            }
-                            _hover={{
-                                bg: 'blue.500',
-                            }}
-                            _focus={{
-                                bg: 'blue.500',
-                            }}
-                            onClick={event => handleSubmit(event)}
-                            type='submit'
-                        >
-                            Post Tender
-                        </Button>
+                                        size='lg'
+                                        width='500px'
+                                        px={4}
+                                        fontSize={'sm'}
+                                        rounded={'full'}
+                                        bg={'blue.400'}
+                                        color={'white'}
+                                        boxShadow={
+                                            '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'
+                                        }
+                                        _hover={{
+                                            bg: 'blue.500',
+                                        }}
+                                        _focus={{
+                                            bg: 'blue.500',
+                                        }}
+                                        onClick={event => handleSubmit(event)}
+                                        type='submit'
+                                    >
+                                        Post Tender
+                                    </Button> : status === 'loading' ?
+                                        <Button
+                                            isLoading
+                                            loadingText='Waiting for Transaction Receipt'
+                                            variant='outline'
+                                        /> : null
+                        }
+
                     </Flex>
 
                     {/* {

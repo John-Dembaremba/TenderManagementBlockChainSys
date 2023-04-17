@@ -11,6 +11,11 @@ import {
 import { useToast } from '@chakra-ui/react';
 import TenderAdvert from '../../../components/TenderAdvert'
 import PostTenderStages from '../../../components/PostTenderStages';
+import rfqGenerator from '../../../utils/rfqGenerator';
+
+
+const rfqNumber = rfqGenerator();
+console.log("RFQ======>>>>", rfqNumber)
 
 const TenderAdvertForm = () => {
     return (
@@ -18,7 +23,7 @@ const TenderAdvertForm = () => {
             <Heading w="100%" textAlign={'center'} fontWeight="normal" mb="2%">
                 Initial Tender Details
             </Heading>
-            <TenderAdvert />
+            <TenderAdvert rfqNumber={rfqNumber} />
 
         </>
     );
@@ -30,7 +35,7 @@ const TenderStagesForm = () => {
             <Heading w="100%" textAlign={'center'} fontWeight="normal" mb="2%">
                 Tender Stages Details
             </Heading>
-            <PostTenderStages />
+            <PostTenderStages rfqNumber={rfqNumber} />
         </>
     );
 };
@@ -50,14 +55,7 @@ export default function createTender() {
     const toast = useToast();
     const [step, setStep] = useState(1);
     const [progress, setProgress] = useState(33.33);
-    const [isTenderPosted, setTenderPosted] = useState(false);
 
-    React.useEffect(() => {
-        const storedValue = JSON.parse(localStorage.getItem('Posted'))
-
-        setTenderPosted(storedValue)
-
-    }, [isTenderPosted])
 
     const handlePostedStages = () => {
         localStorage.setItem('Posted', JSON.stringify(false))
@@ -91,60 +89,70 @@ export default function createTender() {
                     isAnimated></Progress>
                 {step === 1 ? <TenderAdvertForm /> : step === 2 ? <TenderStagesForm /> : <TenderInformationForm />}
 
-                {/* {step === 1 && handlePostedTender} */}
-
-                {
-                    step !== 1 &&
-
+                {step === 1 ?
+                    <Button
+                        onClick={() => {
+                            setStep(step + 1);
+                        }}
+                        colorScheme="teal"
+                        variant="solid">
+                        Post Tender Stages
+                    </Button> :
                     <div>
+
                         <Flex h="10vh" justifyContent="center" alignItems="center">
                             {/* <Flex>
-                                <Button
-                                    onClick={() => {
-                                        setStep(step - 1);
-                                        setProgress(progress - 33.33);
-                                    }}
-                                    isDisabled={step === 1}
-                                    colorScheme="teal"
-                                    variant="solid"
-                                    w="7rem"
-                                    mr="5%">
-                                    Back
-                                </Button>
-                                <Button
-                                    w="7rem"
-                                    isDisabled={step === 3}
-                                    onClick={() => handlePostedStages()}
-                                    colorScheme="teal"
-                                    variant="outline">
-                                    Next
-                                </Button>
-                            </Flex> */}
-                            {step === 2 &&
-                                <Button
+                            <Button
+                                onClick={() => {
+                                    setStep(step - 1);
+                                    setProgress(progress - 33.33);
+                                }}
+                                isDisabled={step === 1}
+                                colorScheme="teal"
+                                variant="solid"
+                                w="7rem"
+                                mr="5%">
+                                Back
+                            </Button>
+                            <Button
+                                w="7rem"
+                                isDisabled={step === 3}
+                                onClick={() => handlePostedStages()}
+                                colorScheme="teal"
+                                variant="outline">
+                                Next
+                            </Button>
+                        </Flex> */}
 
-                                    size='lg'
-                                    width='500px'
-                                    px={4}
-                                    fontSize={'sm'}
-                                    rounded={'full'}
-                                    bg={'blue.400'}
-                                    color={'white'}
-                                    boxShadow={
-                                        '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'
-                                    }
-                                    _hover={{
-                                        bg: 'blue.500',
-                                    }}
-                                    _focus={{
-                                        bg: 'blue.500',
-                                    }}
-                                    onClick={() => handlePostedStages()}
-                                >
-                                    Done Tender Stages Process
-                                </Button>
+                            <>
+                                {step === 2 &&
+                                    <Button
 
-                            }
+                                        size='lg'
+                                        width='500px'
+                                        px={4}
+                                        fontSize={'sm'}
+                                        rounded={'full'}
+                                        bg={'blue.400'}
+                                        color={'white'}
+                                        boxShadow={
+                                            '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'
+                                        }
+                                        _hover={{
+                                            bg: 'blue.500',
+                                        }}
+                                        _focus={{
+                                            bg: 'blue.500',
+                                        }}
+                                        onClick={() => handlePostedStages()}
+                                    >
+                                        Done Tender Stages Process
+                                    </Button>
+
+                                }
+                            </>
+
+
 
                             {step === 3 ? (
 
@@ -165,8 +173,11 @@ export default function createTender() {
                                 </Button>
                             ) : null}
                         </Flex>
+
                     </div>
                 }
+
+
             </Box>
         </>
     );

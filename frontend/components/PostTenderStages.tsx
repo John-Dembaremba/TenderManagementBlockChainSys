@@ -1,7 +1,4 @@
 import React from 'react'
-import { useContractRead } from 'wagmi'
-import abi from '../utils/contractAbi.json' assert {type: "json"};
-import useGetContractData from './CustomHooks/useGetContractData';
 import { useState } from 'react';
 import {
     FormControl,
@@ -24,16 +21,18 @@ import {
 
 } from '@chakra-ui/react'
 import { ArrowForwardIcon, AddIcon, DeleteIcon } from '@chakra-ui/icons'
-
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction, useAccount } from 'wagmi'
+import abi from '../../backend/artifacts/contracts/TenderManagementSystem.sol/TenderManagementSystem.json' assert {type: "json"}
 
 function PostTenderStages({ rfqNumber }: any) {
     type TenderStagesFormData = {
+        requestForQuotation?: string,
         stageId?: string,
         stageName?: string,
         requirements?: string,
     }
 
-    const [tenderStagesFormData, setTenderStagesFormData] = useState([{ stageId: '', stageName: '', requirements: '' }])
+    const [tenderStagesFormData, setTenderStagesFormData] = useState([{ requestForQuotation: '', stageId: '', stageName: '', requirements: '' }])
 
     // try {
     //     const entries = Object.entries(data)
@@ -69,21 +68,37 @@ function PostTenderStages({ rfqNumber }: any) {
     //         <></>
     //     )
     // }
+    const { config } = usePrepareContractWrite({
+        address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+        abi: abi.abi,
+        functionName: 'createTenderAdvert',
+        args: [tenderStagesFormData[0]['requestForQuotation'], tenderStagesFormData[0]['stageId'], tenderStagesFormData[0]['stageName'], tenderStagesFormData[0]['requirements']]
+    })
 
+
+    const { data, isLoading, write } = useContractWrite(config)
+    const { isSuccess, status, isIdle } = useWaitForTransaction({
+        hash: data?.hash,
+    })
 
     const handleTenderStagesFormChange = (index?: any, event?: any) => {
         let data = [...tenderStagesFormData];
         let stageNumber = index + 1
         data[index][event.target.name] = event.target.value;
         data[index]["stageId"] = stageNumber.toString()
-
+        data[index]["requestForQuotation"] = rfqNumber
         setTenderStagesFormData(data)
 
     }
 
-    const handleAddTenderStagesChange = (index?: number) => {
-        setTenderStagesFormData([...tenderStagesFormData, { stageId: '', stageName: '', requirements: '' }]);
-        // console.log(tenderStagesFormData[index])
+    const handleAddTenderStagesChange = (index?: number, addStage = false, postTenderStage = false) => {
+        { postTenderStage && write?.(); }
+
+        if (addStage) {
+            setTenderStagesFormData([...tenderStagesFormData, { requestForQuotation: '', stageId: '', stageName: '', requirements: '' }]);
+        }
+        // setTenderStagesFormData([...tenderStagesFormData, { requestForQuotation: '', stageId: '', stageName: '', requirements: '' }]);
+        console.log(tenderStagesFormData[index])
     }
 
     const handleRemoveTenderStagesChange = (index?: any) => {
@@ -125,11 +140,24 @@ function PostTenderStages({ rfqNumber }: any) {
                                         />
                                     </Box>
                                     <Box>
-                                        <ButtonGroup mt={9} p={3} size='md' isAttached variant='outline' alignContent='center'>
-                                            <Tooltip label='Post Stage'>
-                                                <IconButton aria-label='Add stage' height='48px' width='50px' icon={<AddIcon />} onClick={() => handleAddTenderStagesChange(index)} />
-                                            </Tooltip>
 
+                                        <ButtonGroup mt={9} p={3} size='md' isAttached variant='outline'>
+                                            <Tooltip label='Post Stage'>
+                                                <Button
+                                                    aria-label='Add stage'
+                                                    height='48px'
+                                                    width='50px'
+                                                    onClick={() => handleAddTenderStagesChange(index, postTenderStage = true)}
+                                                >Post</Button>
+                                            </Tooltip>
+                                            <Tooltip label='Add Stage'>
+                                                <IconButton
+                                                    aria-label='Add stage'
+                                                    height='48px'
+                                                    width='20px'
+                                                    icon={<AddIcon />}
+                                                    onClick={() => handleAddTenderStagesChange(index, addStage = true)} />
+                                            </Tooltip>
                                         </ButtonGroup>
                                     </Box>
                                 </Grid>
