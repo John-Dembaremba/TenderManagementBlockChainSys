@@ -14,7 +14,7 @@ async function main() {
 
   await deployedContract.deployed();
 
-  console.log("Conract Address: ", deployedContract.address)
+  console.log("Contract Address: ", deployedContract.address)
   fs.writeFile("../artifacts/contracts/TenderManagementSystem.sol/ContractAddress.json", JSON.stringify({ "Address": deployedContract.address }), function (error) {
     console.error(
       "Error on writing", error

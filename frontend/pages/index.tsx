@@ -7,7 +7,7 @@ const Home: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>TenderManager</title>
+        <title>TenderManagement System</title>
       </Head>
       <div>
         <MainBody />

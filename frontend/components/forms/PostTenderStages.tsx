@@ -22,7 +22,7 @@ import {
 } from '@chakra-ui/react'
 import { ArrowForwardIcon, AddIcon, DeleteIcon } from '@chakra-ui/icons'
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction, useAccount } from 'wagmi'
-import abi from '../../backend/artifacts/contracts/TenderManagementSystem.sol/TenderManagementSystem.json' assert {type: "json"}
+import abi from '../../../backend/artifacts/contracts/TenderManagementSystem.sol/TenderManagementSystem.json' assert {type: "json"}
 
 function PostTenderStages({ rfqNumber }: any) {
     type TenderStagesFormData = {
@@ -69,10 +69,10 @@ function PostTenderStages({ rfqNumber }: any) {
     //     )
     // }
     const { config } = usePrepareContractWrite({
-        address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+        address: "0x2F1c27d74db0eBD02A880f4A7334637AB85dEc82",
         abi: abi.abi,
-        functionName: 'createTenderAdvert',
-        args: [tenderStagesFormData[0]['requestForQuotation'], tenderStagesFormData[0]['stageId'], tenderStagesFormData[0]['stageName'], tenderStagesFormData[0]['requirements']]
+        functionName: 'createTenderStages',
+        args: [tenderStagesFormData[tenderStagesFormData.length - 1]['requestForQuotation'], tenderStagesFormData[tenderStagesFormData.length - 1]['stageId'], tenderStagesFormData[tenderStagesFormData.length - 1]['stageName'], tenderStagesFormData[tenderStagesFormData.length - 1]['requirements']]
     })
 
 
@@ -98,7 +98,7 @@ function PostTenderStages({ rfqNumber }: any) {
             setTenderStagesFormData([...tenderStagesFormData, { requestForQuotation: '', stageId: '', stageName: '', requirements: '' }]);
         }
         // setTenderStagesFormData([...tenderStagesFormData, { requestForQuotation: '', stageId: '', stageName: '', requirements: '' }]);
-        console.log(tenderStagesFormData[index])
+        // console.log(tenderStagesFormData[index])
     }
 
     const handleRemoveTenderStagesChange = (index?: any) => {
@@ -147,7 +147,7 @@ function PostTenderStages({ rfqNumber }: any) {
                                                     aria-label='Add stage'
                                                     height='48px'
                                                     width='50px'
-                                                    onClick={() => handleAddTenderStagesChange(index, postTenderStage = true)}
+                                                    onClick={() => handleAddTenderStagesChange(index, false, true)}
                                                 >Post</Button>
                                             </Tooltip>
                                             <Tooltip label='Add Stage'>
@@ -156,7 +156,7 @@ function PostTenderStages({ rfqNumber }: any) {
                                                     height='48px'
                                                     width='20px'
                                                     icon={<AddIcon />}
-                                                    onClick={() => handleAddTenderStagesChange(index, addStage = true)} />
+                                                    onClick={() => handleAddTenderStagesChange(index, true, false)} />
                                             </Tooltip>
                                         </ButtonGroup>
                                     </Box>

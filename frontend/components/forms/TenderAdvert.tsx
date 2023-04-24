@@ -24,10 +24,8 @@ import { Container } from '@chakra-ui/react'
 
 import { ArrowForwardIcon, AddIcon, DeleteIcon } from '@chakra-ui/icons'
 import { useState, useEffect } from 'react';
-import TenderStages from '../components/forms/TenderStages'
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction, useAccount } from 'wagmi'
-import abi from '../../backend/artifacts/contracts/TenderManagementSystem.sol/TenderManagementSystem.json' assert {type: "json"}
-import useGetContractData from '../components/CustomHooks/useGetContractData';
+import abi from '../../../backend/artifacts/contracts/TenderManagementSystem.sol/TenderManagementSystem.json' assert {type: "json"}
 
 
 function TenderAdvert({ rfqNumber }: any) {
@@ -47,7 +45,7 @@ function TenderAdvert({ rfqNumber }: any) {
     const [isTenderFormSubmitted, setTenderFormSubmitted] = useState(false)
 
     const { config } = usePrepareContractWrite({
-        address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+        address: "0x2F1c27d74db0eBD02A880f4A7334637AB85dEc82",
         abi: abi.abi,
         functionName: 'createTenderAdvert',
         args: [tenderAdvertFormData.requestForQuotation!, tenderAdvertFormData.openDate!, tenderAdvertFormData.closingDate!, tenderAdvertFormData.tenderRequirements!]

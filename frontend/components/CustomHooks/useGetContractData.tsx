@@ -1,29 +1,42 @@
 import React from 'react'
-import { useContractRead } from 'wagmi'
-import abi from '../../utils/contractAbi.json' assert {type: "json"};
+import { useContractRead, useAccount } from 'wagmi'
+import abi from '../../../backend/artifacts/contracts/TenderManagementSystem.sol/TenderManagementSystem.json' assert {type: "json"};
 
 
-function useGetContractData({ isAdverts = false, isStages = false, isCompanyProf = false, isCompanyDocs = false, isBidders = false, isTenderProcess = false }) {
+function useGetContractData({ isAdverts = false,
+    isStages = false,
+    isCompanyProf = false,
+    isCompanyDocs = false,
+    isBidders = false,
+    isTenderProcess = false,
+    isCompanyProfile = false }) {
 
 
 
     if (isAdverts) {
         const { data } = useContractRead({
 
-            address: '0x18b5Af6F8fc4800C74ef7682f28B97d6e0Dc126b',
-            abi: abi,
+            address: '0x2F1c27d74db0eBD02A880f4A7334637AB85dEc82',
+            abi: abi.abi,
             functionName: 'getTenderAdvert',
+            onSuccess(data) {
+                console.log('Success', data)
+            },
+            onError(error) {
+                console.log('Error', error)
+            },
             watch: true,
+
         })
         return data
     }
     if (isStages) {
         const { data } = useContractRead({
 
-            address: '0x18b5Af6F8fc4800C74ef7682f28B97d6e0Dc126b',
-            abi: abi,
+            address: '0x2F1c27d74db0eBD02A880f4A7334637AB85dEc82',
+            abi: abi.abi,
             functionName: 'getTenderStages',
-            watch: true,
+            // watch: true,
 
 
         })
@@ -33,10 +46,10 @@ function useGetContractData({ isAdverts = false, isStages = false, isCompanyProf
     if (isCompanyProf) {
         const { data } = useContractRead({
 
-            address: '0x18b5Af6F8fc4800C74ef7682f28B97d6e0Dc126b',
-            abi: abi,
+            address: '0x2F1c27d74db0eBD02A880f4A7334637AB85dEc82',
+            abi: abi.abi,
             functionName: 'getCompanyProfile',
-            watch: true,
+            // watch: true,
 
         })
         return data
@@ -44,20 +57,20 @@ function useGetContractData({ isAdverts = false, isStages = false, isCompanyProf
     }
     if (isCompanyDocs) {
         const { data } = useContractRead({
-            address: '0x18b5Af6F8fc4800C74ef7682f28B97d6e0Dc126b',
-            abi: abi,
+            address: '0x2F1c27d74db0eBD02A880f4A7334637AB85dEc82',
+            abi: abi.abi,
             functionName: 'getCompanyDocs',
-            watch: true,
+            // watch: true,
 
         })
         return data
     }
     if (isBidders) {
         const { data } = useContractRead({
-            address: '0x18b5Af6F8fc4800C74ef7682f28B97d6e0Dc126b',
-            abi: abi,
+            address: '0x2F1c27d74db0eBD02A880f4A7334637AB85dEc82',
+            abi: abi.abi,
             functionName: 'getBidTender',
-            watch: true,
+            // watch: true,
 
         })
         return data
@@ -65,9 +78,25 @@ function useGetContractData({ isAdverts = false, isStages = false, isCompanyProf
     if (isTenderProcess) {
         const { data } = useContractRead({
 
-            address: '0x18b5Af6F8fc4800C74ef7682f28B97d6e0Dc126b',
-            abi: abi,
+            address: '0x2F1c27d74db0eBD02A880f4A7334637AB85dEc82',
+            abi: abi.abi,
             functionName: 'getTenderProcess',
+            // watch: true,
+
+        })
+        return data
+    }
+
+    if (isCompanyProfile) {
+
+        const { address, isConnecting, isDisconnected } = useAccount()
+
+        const { data } = useContractRead({
+
+            address: '0x2F1c27d74db0eBD02A880f4A7334637AB85dEc82',
+            abi: abi.abi,
+            functionName: 'companyProfile',
+            args: [address],
             watch: true,
 
         })

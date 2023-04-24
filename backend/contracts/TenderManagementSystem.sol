@@ -9,21 +9,24 @@ contract TenderManagementSystem {
         string openDate;
         string closingDate;
         string requirements;
-        TenderStages[] stages;
+        address account;
     }
     mapping(address => TenderAdvert) public tenderAdvert; // link blockchain account with tender adverts
     TenderAdvert[] public tendersArray;
 
     struct TenderStages {
+        string requestForQuotation;
+        address account;
         string stageId;
         string stageName;
         string requirements;
     }
-    // link tender RFQ with tender stages
+    mapping(string => TenderStages) public tenderStages; // link tender RFQ with tender stages
     TenderStages[] public tenderStagesArray;
 
     // Profile
     struct CompanyProfile {
+        address account;
         string companyName;
         string companyAddress;
         string contactInfo;
@@ -33,6 +36,7 @@ contract TenderManagementSystem {
     CompanyProfile[] public companiesProfilesArray;
 
     struct CompanyDocs {
+        address account;
         string docId;
         string name;
         string[] docAddress; // CID from IPFS
@@ -42,6 +46,7 @@ contract TenderManagementSystem {
     // Bidders
 
     struct BidTender {
+        address account;
         string applicationId;
         string tenderStage;
         string[] biddingDocs; // CID from IPFS
@@ -50,6 +55,7 @@ contract TenderManagementSystem {
     BidTender[] public bidTendersArray;
 
     struct TenderProcess {
+        address account;
         string application; // Fk from applicationId in BidTender
         bool acceptApplication;
         string reasons;
@@ -61,20 +67,40 @@ contract TenderManagementSystem {
         string memory _requestForQuotation,
         string memory _openDate,
         string memory _closingDate,
-        string memory _requirements,
-        TenderStages calldata _stages
+        string memory _requirements
     ) public {
         TenderAdvert storage postTender = tenderAdvert[msg.sender];
         postTender.requestForQuotation = _requestForQuotation;
         postTender.openDate = _openDate;
         postTender.closingDate = _closingDate;
         postTender.requirements = _requirements;
+        postTender.account = msg.sender;
         tendersArray.push(postTender);
-        tenderStagesArray.push(_stages);
     }
 
     function getTenderAdvert() public view returns (TenderAdvert[] memory) {
         return tendersArray;
+    }
+
+    function createTenderStages(
+        string memory _requestForQuotaion,
+        string memory _stageId,
+        string memory _stageName,
+        string memory _requirements
+    ) public {
+        TenderStages storage postTenderStages = tenderStages[
+            _requestForQuotaion
+        ];
+        postTenderStages.requestForQuotation = _requestForQuotaion;
+        postTenderStages.stageId = _stageId;
+        postTenderStages.stageName = _stageName;
+        postTenderStages.requirements = _requirements;
+        postTenderStages.account = msg.sender;
+        tenderStagesArray.push(postTenderStages);
+    }
+
+    function getTenderStages() public view returns (TenderStages[] memory) {
+        return tenderStagesArray;
     }
 
     function createCompanyProfile(
@@ -88,6 +114,7 @@ contract TenderManagementSystem {
         _companyProfile.companyAddress = _companyAddress;
         _companyProfile.contactInfo = _contactInfo;
         _companyProfile.email = _email;
+        _companyProfile.account = msg.sender;
         companiesProfilesArray.push(_companyProfile);
     }
 
@@ -104,6 +131,7 @@ contract TenderManagementSystem {
         _companyDocs.docId = _docId;
         _companyDocs.name = _name;
         _companyDocs.docAddress = _docAddress;
+        _companyDocs.account = msg.sender;
         companiesDocsArray.push(_companyDocs);
     }
 
@@ -120,6 +148,7 @@ contract TenderManagementSystem {
         _bidTender.applicationId = _applicationId;
         _bidTender.tenderStage = _tenderStage;
         _bidTender.biddingDocs = _biddingDocs;
+        _bidTender.account = msg.sender;
         bidTendersArray.push(_bidTender);
     }
 
@@ -136,6 +165,7 @@ contract TenderManagementSystem {
         _tenderProcessing.application = _application;
         _tenderProcessing.acceptApplication = _acceptApplication;
         _tenderProcessing.reasons = _reasons;
+        _tenderProcessing.account = msg.sender;
         tenderProcessesArray.push(_tenderProcessing);
     }
 
