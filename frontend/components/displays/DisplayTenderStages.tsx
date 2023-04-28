@@ -12,15 +12,41 @@ import {
     Box,
     Tag,
     TagLabel,
-    Button
+    Button,
+    Skeleton,
+    Stack
 } from '@chakra-ui/react'
 import useGetContractData from '../CustomHooks/useGetContractData';
 import BiddingDocuments from '../forms/BiddingDocuments';
-
+import { useState, useEffect } from 'react';
 
 function DisplayTenderStages({ rfqNumber }: any) {
-    const tenderStages = useGetContractData({ isStages: true }).filter(stage => stage.requestForQuotation === rfqNumber)
+    const tenderStages = useGetContractData({ isStages: true })
+
+    const [tenderStageData, setTenderStageData] = useState(tenderStages)
+    const [isDataAvailable, setDataAvailable] = useState(false)
     // console.log(tenderStages.filter(stage => stage.requestForQuotation === rfqNumber))
+
+    useEffect(() => {
+        console.log(tenderStages)
+        function geTenderStagesData(data?: any) {
+            if (tenderStageData === 'undefined') {
+                console.log("Hit")
+                setTenderStageData(tenderStages)
+                geTenderStagesData(tenderStageData)
+            }
+            else {
+                setTenderStageData(tenderStages.filter(stage => stage.requestForQuotation === rfqNumber))
+                setDataAvailable(true)
+            }
+        }
+
+        geTenderStagesData(tenderStages)
+
+        // setTenderAdverts(false)
+    }, [tenderStageData])
+
+
     return (
         <div>
             <TableContainer>
@@ -35,17 +61,28 @@ function DisplayTenderStages({ rfqNumber }: any) {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {tenderStages.map((stage, index) => (
+                        {isDataAvailable ?
+                            <>
+                                {tenderStageData.map((stage, index) => (
 
-                            <Tr>
-                                <Td>{stage['stageId']}</Td>
-                                <Td>{stage['stageName']}</Td>
-                                <Td>{stage['requirements']}</Td>
-                                <Td>
-                                    <BiddingDocuments rfqNumber={stage.requestForQuotation} stageNumber={stage.stageId} />
-                                </Td>
-                            </Tr>
-                        ))}
+                                    <Tr>
+                                        <Td>{stage['stageId']}</Td>
+                                        <Td>{stage['stageName']}</Td>
+                                        <Td>{stage['requirements']}</Td>
+                                        <Td>
+                                            <BiddingDocuments rfqNumber={stage.requestForQuotation} stageNumber={stage.stageId} />
+                                        </Td>
+                                    </Tr>
+                                ))}
+                            </>
+                            :
+                            <Stack>
+                                <Skeleton height='100px' />
+                                <Skeleton height='100px' />
+                                <Skeleton height='100px' />
+                            </Stack>
+                        }
+
                     </Tbody>
                 </Table>
             </TableContainer>

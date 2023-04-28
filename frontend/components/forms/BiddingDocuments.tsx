@@ -27,7 +27,6 @@ function BiddingDocuments({ rfqNumber, stageNumber }: any) {
         <div>
             <SimpleGrid columns={2} spacing={3}>
                 <Box >
-
                     <div className="mb-3">
                         <label
                             htmlFor="formFileMultiple"

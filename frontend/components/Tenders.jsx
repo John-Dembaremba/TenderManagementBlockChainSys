@@ -14,8 +14,7 @@ import {
     Button,
     useDisclosure,
     Stack,
-    Collapse,
-    Lorem
+    Skeleton, SkeletonCircle, SkeletonText
 } from '@chakra-ui/react'
 import Image from 'next/image';
 import Link from 'next/link';
@@ -24,23 +23,44 @@ import useGetContractData from './CustomHooks/useGetContractData'
 import useGetCompanyProfile from './CustomHooks/useGetCompanyProfile';
 import DisplayTenderStages from './displays/DisplayTenderStages';
 import { useState, useEffect } from 'react';
-// import { Fade, ScaleFade, Slide, SlideFade, Collapse } from '@chakra-ui/react'
+import { useAccount } from 'wagmi'
+import dynamic from "next/dynamic";
+
+
+const isSSREnabled = () => typeof window === 'undefined';
 
 
 function Tenders() {
-    const { isOpen, onToggle } = useDisclosure()
+    const advertData = useGetContractData({ isAdverts: true })
+    const [isAdvertsDataAvailable, setIsAdvertsDataAvailable] = useState(false)
     const [isTenderAdverts, setTenderAdverts] = useState(true)
     const [isApplyTender, setApplyTender] = useState(false)
-    const [isTrackApplication, setTrackApplication] = useState(false)
     const [RfqNumber, setRfqNumber] = useState('')
+    const { isConnected, address } = useAccount()
+    console.log(address)
+    // const companyName = (address) => {
+    //     const data = useGetCompanyProfile({ address: address })
+    //     console.log("Data====================>>>>>", data)
+    //     return data.companyName
+    // }
 
     useEffect(() => {
-        console.log("TenderAdvert?: ", isTenderAdverts)
-        console.log("RFQNumber?: ", RfqNumber)
-        // setTenderAdverts(false)
-    }, [isTenderAdverts])
 
-    const data = useGetContractData({ isAdverts: true })
+        function getAdvertData(_data) {
+
+            if (advertData == 'undefined') {
+                getAdvertData(advertData)
+                console.log("Hit")
+            }
+            else {
+                setIsAdvertsDataAvailable(true)
+            }
+        }
+        getAdvertData(advertData)
+        console.log("Available", advertData)
+        console.log("Data", advertData)
+        // setTenderAdverts(false)
+    }, [isAdvertsDataAvailable])
     // console.log("====>>>>TenderAdvert", useGetContractData({ isAdverts: true }))
     // console.log("====>>>>T", useGetCompanyProfile({ address: '' }))
 
@@ -49,12 +69,14 @@ function Tenders() {
     // const entries = Object.entries(data)
 
     const handleApply = (event, rfqNumber) => {
-        console.log("======>>>>", rfqNumber)
         setRfqNumber(rfqNumber)
         setTenderAdverts(!isTenderAdverts)
         setApplyTender(true)
 
     }
+
+
+
 
     const TenderAdvert = () => {
         return (
@@ -69,7 +91,6 @@ function Tenders() {
                         <Thead>
                             <Tr>
                                 <Th></Th>
-                                <Th>Company Name</Th>
                                 <Th>RFQ Number</Th>
                                 <Th>Start Date</Th>
                                 <Th>End Date</Th>
@@ -78,44 +99,61 @@ function Tenders() {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            {data.map((tender, index) => (
-                                <Tr>
-                                    <Td>
-                                        <Flex>
-                                            <Box>
-                                                <Image src="/cube.png" width="20" height="20" />
-                                            </Box>
+                            {isAdvertsDataAvailable ?
+                                <>
+                                    {advertData.map((tender, index) => (
+                                        <Tr>
+                                            <Td>
+                                                <Flex>
+                                                    <Box>
+                                                        <Image src="/cube.png" width="20" height="20" />
+                                                    </Box>
 
-                                        </Flex>
-                                    </Td>
-                                    <Td>{companyName(tender['account'])}</Td>
-                                    <Td>{tender['requestForQuotation']}</Td>
-                                    <Td>{tender['openDate']}</Td>
-                                    <Td>{tender['closingDate']}</Td>
-                                    <Td>{tender['requirements']}</Td>
-                                    <Td>
-                                        <Stack direction='row' spacing={4}>
-                                            <Button
-                                                leftIcon={<ArrowForwardIcon />}
-                                                colorScheme='pink'
-                                                variant='solid'
-                                                onClick={(event) => handleApply(event, tender['requestForQuotation'])}
-                                            >
-                                                Apply
-                                            </Button>
+                                                </Flex>
+                                            </Td>
+                                            {/* <Td>{companyName(tender['account'])}</Td> */}
+                                            <Td>{tender['requestForQuotation']}</Td>
+                                            <Td>{tender['openDate']}</Td>
+                                            <Td>{tender['closingDate']}</Td>
+                                            <Td>{tender['requirements']}</Td>
+                                            <Td>
+                                                <Stack direction='row' spacing={4}>
+                                                    <Button
+                                                        leftIcon={<ArrowForwardIcon />}
+                                                        colorScheme='pink'
+                                                        variant='solid'
+                                                        onClick={(event) => handleApply(event, tender['requestForQuotation'])}
+                                                    >
+                                                        Apply
+                                                    </Button>
+                                                    {address === tender.account ?
+                                                        <>
+                                                            <Button rightIcon={<ViewIcon />} colorScheme='blue' variant='outline'>
+                                                                View applications
+                                                            </Button>
+                                                        </> :
+                                                        <Button rightIcon={<ViewIcon />} colorScheme='blue' variant='outline'>
+                                                            Track application
+                                                        </Button>
+                                                    }
 
 
-                                            <Button rightIcon={<ViewIcon />} colorScheme='blue' variant='outline'>
-                                                Track application
-                                            </Button>
-                                        </Stack>
-                                    </Td>
+                                                </Stack>
+                                            </Td>
 
-                                </Tr>
+                                        </Tr>
 
 
-                            )
-                            )
+                                    )
+                                    )
+                                    }
+                                </>
+                                :
+                                <Stack>
+                                    <Skeleton height='20px' />
+                                    <Skeleton height='20px' />
+                                    <Skeleton height='20px' />
+                                </Stack>
                             }
 
 
@@ -123,20 +161,12 @@ function Tenders() {
 
                     </Table>
 
-
                 </TableContainer>
+
             </>
+
         )
     }
-
-    const companyName = (address) => {
-        return useGetCompanyProfile({ address: address })['companyName']
-    }
-
-
-
-
-
 
     return (
         <div>
@@ -144,6 +174,9 @@ function Tenders() {
 
         </div>
     )
+
+
+
 }
 
 export default Tenders

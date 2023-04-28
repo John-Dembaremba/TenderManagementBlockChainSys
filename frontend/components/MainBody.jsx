@@ -8,7 +8,7 @@ import { SimpleGrid } from '@chakra-ui/react'
 import { Box } from '@chakra-ui/react'
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from 'wagmi'
-
+import dynamic from "next/dynamic";
 
 function MainBody() {
     const { address, isConnected, isDisconnected } = useAccount()
@@ -49,6 +49,7 @@ function MainBody() {
                     <br />
                     <div className="flex-row">
                         {/* <SimpleGrid columns={2} spacing={10}> */}
+
                         <Box borderWidth='2px' borderRadius='lg'><Tenders /></Box>
 
                         {/* <Box borderWidth='2px' borderRadius='lg'><Bidders /></Box> */}
@@ -65,4 +66,4 @@ function MainBody() {
     )
 }
 
-export default MainBody
+export default dynamic(() => Promise.resolve(MainBody), { ssr: false })
