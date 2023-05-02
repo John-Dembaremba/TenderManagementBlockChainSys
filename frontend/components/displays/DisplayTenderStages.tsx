@@ -14,18 +14,22 @@ import {
     TagLabel,
     Button,
     Skeleton,
-    Stack
+    Stack,
+    Link
 } from '@chakra-ui/react'
 import useGetContractData from '../CustomHooks/useGetContractData';
 import BiddingDocuments from '../forms/BiddingDocuments';
 import { useState, useEffect } from 'react';
+import { ArrowForwardIcon, ArrowBackIcon } from '@chakra-ui/icons'
+import DisplayBidResult from './DisplayBidResult';
 
-function DisplayTenderStages({ rfqNumber }: any) {
+
+function DisplayTenderStages(rfqNumber?: any, viewApplication?: boolean, trackApplication?: boolean) {
     const tenderStages = useGetContractData({ isStages: true })
 
     const [tenderStageData, setTenderStageData] = useState(tenderStages)
     const [isDataAvailable, setDataAvailable] = useState(false)
-    // console.log(tenderStages.filter(stage => stage.requestForQuotation === rfqNumber))
+
 
     useEffect(() => {
         console.log(tenderStages)
@@ -36,7 +40,9 @@ function DisplayTenderStages({ rfqNumber }: any) {
                 geTenderStagesData(tenderStageData)
             }
             else {
-                setTenderStageData(tenderStages.filter(stage => stage.requestForQuotation === rfqNumber))
+                console.log("======>>>", rfqNumber.rfqNumber)
+                // console.log(tenderStages.filter(stage => stage.requestForQuotation === rfqNumber))
+                setTenderStageData(tenderStages.filter(stage => stage.requestForQuotation === rfqNumber.rfqNumber))
                 setDataAvailable(true)
             }
         }
@@ -44,9 +50,9 @@ function DisplayTenderStages({ rfqNumber }: any) {
         geTenderStagesData(tenderStages)
 
         // setTenderAdverts(false)
-    }, [tenderStageData])
+    }, [])
 
-
+    console.log("Track: ", rfqNumber.trackApplication, "View", rfqNumber.viewApplication)
     return (
         <div>
             <TableContainer>
@@ -70,7 +76,25 @@ function DisplayTenderStages({ rfqNumber }: any) {
                                         <Td>{stage['stageName']}</Td>
                                         <Td>{stage['requirements']}</Td>
                                         <Td>
-                                            <BiddingDocuments rfqNumber={stage.requestForQuotation} stageNumber={stage.stageId} />
+                                            {rfqNumber.viewApplication ?
+                                                <>
+                                                    <Button
+                                                        rightIcon={<ArrowForwardIcon />}
+                                                        colorScheme='pink'
+                                                        variant='solid'
+                                                    >
+                                                        <Link href={"./bids/" + stage.stageId + "/" + rfqNumber.rfqNumber}>Supplier Assessment</Link>
+                                                    </Button>
+                                                </> :
+                                                rfqNumber.trackApplication ?
+                                                    <>
+                                                        <DisplayBidResult
+                                                            rfqNumber={rfqNumber}
+                                                            stageId={stage.stageId} />
+                                                    </> :
+                                                    <BiddingDocuments rfqNumber={stage.requestForQuotation} stageNumber={stage.stageId} />
+
+                                            }
                                         </Td>
                                     </Tr>
                                 ))}
@@ -86,7 +110,7 @@ function DisplayTenderStages({ rfqNumber }: any) {
                     </Tbody>
                 </Table>
             </TableContainer>
-        </div>
+        </div >
     )
 }
 

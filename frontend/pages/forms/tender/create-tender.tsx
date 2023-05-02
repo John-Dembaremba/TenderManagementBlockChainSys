@@ -6,7 +6,9 @@ import {
     Button,
     Heading,
     Flex,
-    Link
+    Link,
+    Divider,
+    Stack
 } from '@chakra-ui/react';
 
 import { useToast } from '@chakra-ui/react';
@@ -14,10 +16,10 @@ import TenderAdvert from '../../../components/forms/TenderAdvert';
 import PostTenderStages from '../../../components/forms/PostTenderStages';
 import TenderDetails from '../../../components/displays/TenderDetails';
 import rfqGenerator from '../../../utils/rfqGenerator';
-import { LockIcon, UnlockIcon, ArrowForwardIcon } from '@chakra-ui/icons'
+import { ArrowForwardIcon, ArrowBackIcon } from '@chakra-ui/icons'
+import dynamic from "next/dynamic";
 
-
-export default function createTender() {
+function createTender() {
     const toast = useToast();
     const [step, setStep] = useState(1);
     const [progress, setProgress] = useState(33.33);
@@ -98,14 +100,30 @@ export default function createTender() {
                 {step === 1 ? <TenderAdvertForm /> : step === 2 ? <TenderStagesForm /> : <TenderInformationForm />}
 
                 {step === 1 ?
-                    <Button
-                        onClick={() => {
-                            setStep(step + 1);
-                        }}
-                        colorScheme="teal"
-                        variant="solid">
-                        Post Tender Stages
-                    </Button> :
+                    <>
+                        <Divider orientation='horizontal' />
+                        <br />
+                        <Stack direction='row' spacing={4}>
+
+                            <Button
+                                onClick={() => {
+                                    setStep(step + 1);
+                                }}
+                                rightIcon={<ArrowForwardIcon />}
+                                colorScheme='pink'
+                                variant='solid'
+                            >
+                                Create Tender Stages
+                            </Button>
+                            <Button
+                                leftIcon={<ArrowBackIcon />}
+                                colorScheme='pink'
+                                variant='solid'
+                            >
+                                <Link href='../..'>Home</Link>
+                            </Button>
+                        </Stack>
+                    </> :
                     <div>
 
                         <Flex h="10vh" justifyContent="center" alignItems="center">
@@ -153,7 +171,7 @@ export default function createTender() {
                                             bg: 'blue.500',
                                         }}
                                     >
-                                        <Link href=''>Home</Link>
+                                        <Link href='../..'>Home</Link>
                                     </Button>
 
                                 }
@@ -191,3 +209,5 @@ export default function createTender() {
         </>
     );
 }
+
+export default dynamic(() => Promise.resolve(createTender), { ssr: false })

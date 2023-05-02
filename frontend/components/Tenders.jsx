@@ -14,17 +14,19 @@ import {
     Button,
     useDisclosure,
     Stack,
-    Skeleton, SkeletonCircle, SkeletonText
+    Skeleton, SkeletonCircle, SkeletonText,
+
 } from '@chakra-ui/react'
 import Image from 'next/image';
 import Link from 'next/link';
-import { ViewIcon, ArrowForwardIcon } from '@chakra-ui/icons'
+import { ViewIcon, ArrowForwardIcon, ArrowBackIcon } from '@chakra-ui/icons'
 import useGetContractData from './CustomHooks/useGetContractData'
 import useGetCompanyProfile from './CustomHooks/useGetCompanyProfile';
 import DisplayTenderStages from './displays/DisplayTenderStages';
 import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi'
 import dynamic from "next/dynamic";
+import DisplayBids from './displays/DisplayBids';
 
 
 const isSSREnabled = () => typeof window === 'undefined';
@@ -35,9 +37,10 @@ function Tenders() {
     const [isAdvertsDataAvailable, setIsAdvertsDataAvailable] = useState(false)
     const [isTenderAdverts, setTenderAdverts] = useState(true)
     const [isApplyTender, setApplyTender] = useState(false)
+    const [isViewApplicants, setViewApplicants] = useState(false)
+    const [isTrackApplication, setTrackApplication] = useState(false)
     const [RfqNumber, setRfqNumber] = useState('')
     const { isConnected, address } = useAccount()
-    console.log(address)
     // const companyName = (address) => {
     //     const data = useGetCompanyProfile({ address: address })
     //     console.log("Data====================>>>>>", data)
@@ -74,6 +77,22 @@ function Tenders() {
         setApplyTender(true)
 
     }
+
+
+    const handleViewApplications = (event, rfqNumber) => {
+        setRfqNumber(rfqNumber)
+        setTenderAdverts(!isTenderAdverts)
+        setApplyTender(true)
+        setViewApplicants(true)
+    }
+
+    const handleTrackApplications = (event, rfqNumber) => {
+        setRfqNumber(rfqNumber)
+        setTenderAdverts(!isTenderAdverts)
+        setApplyTender(true)
+        setTrackApplication(true)
+    }
+
 
 
 
@@ -126,13 +145,24 @@ function Tenders() {
                                                     >
                                                         Apply
                                                     </Button>
-                                                    {address === tender.account ?
+                                                    {'address' === tender.account ?
                                                         <>
-                                                            <Button rightIcon={<ViewIcon />} colorScheme='blue' variant='outline'>
+                                                            <Button
+                                                                rightIcon={<ViewIcon />}
+                                                                colorScheme='blue'
+                                                                variant='outline'
+                                                                onClick={(event) => handleViewApplications(event, tender['requestForQuotation'])}
+                                                            >
                                                                 View applications
                                                             </Button>
                                                         </> :
-                                                        <Button rightIcon={<ViewIcon />} colorScheme='blue' variant='outline'>
+                                                        <Button
+                                                            rightIcon={<ViewIcon />}
+                                                            colorScheme='blue'
+                                                            variant='outline'
+                                                            onClick={(event) => handleTrackApplications(event, tender['requestForQuotation'])}
+
+                                                        >
                                                             Track application
                                                         </Button>
                                                     }
@@ -170,7 +200,23 @@ function Tenders() {
 
     return (
         <div>
-            {isTenderAdverts ? <TenderAdvert /> : isApplyTender ? <DisplayTenderStages rfqNumber={RfqNumber} /> : null}
+            {isTenderAdverts ? <TenderAdvert /> : isApplyTender ?
+                <>
+                    <Button
+                        leftIcon={<ArrowBackIcon />}
+                        colorScheme='pink'
+                        variant='solid'
+                        onClick={event => {
+                            setTenderAdverts(true)
+                        }}
+                    >Home</Button>
+                    <DisplayTenderStages
+                        rfqNumber={RfqNumber}
+                        viewApplication={isViewApplicants}
+                        trackApplication={isTrackApplication}
+                    />
+                </> :
+                null}
 
         </div>
     )
