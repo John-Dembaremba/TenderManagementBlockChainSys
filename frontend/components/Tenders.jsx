@@ -145,7 +145,7 @@ function Tenders() {
                                                     >
                                                         Apply
                                                     </Button>
-                                                    {'address' === tender.account ?
+                                                    {address === tender.account ?
                                                         <>
                                                             <Button
                                                                 rightIcon={<ViewIcon />}
